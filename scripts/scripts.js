@@ -20,6 +20,7 @@ const LCP_BLOCKS = []; // add your LCP blocks to the list
  * @param {Element} main The container element
  */
 function buildHeroBlock(main) {
+  if(main.querySelector('.hero')) return;
   const h1 = main.querySelector('h1');
   const picture = main.querySelector('picture');
   // eslint-disable-next-line no-bitwise
@@ -79,13 +80,13 @@ async function loadEager(doc) {
 export function addFavIcon(href) {
   const link = document.createElement('link');
   link.rel = 'icon';
-  link.type = 'image/png';
+  link.type = 'image/svg+xml';
   link.href = href;
   const existingLink = document.querySelector('head link[rel="icon"]');
   if (existingLink) {
-    existingLink.replaceWith(link);
+    existingLink.parentElement.replaceChild(link, existingLink);
   } else {
-    document.head.append(link);
+    document.getElementsByTagName('head')[0].appendChild(link);
   }
 }
 
@@ -105,7 +106,7 @@ async function loadLazy(doc) {
   loadFooter(doc.querySelector('footer'));
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
-  addFavIcon(`${window.hlx.codeBasePath}/styles/favicon.png`);
+  addFavIcon(`${window.hlx.codeBasePath}/styles/favicon.svg`);
   sampleRUM('lazy');
   sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
   sampleRUM.observe(main.querySelectorAll('picture > img'));
